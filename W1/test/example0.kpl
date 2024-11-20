@@ -1,0 +1,33 @@
+PROGRAM Example1; (* Example 1 *)
+VAR a, b: INTEGER;
+  c: CHAR;
+  str: STRING;
+  arr: ARRAY (.100.) OF INTEGER;
+BEGIN
+  (* Test arithmetic operators *)
+  a := b + c * d - e / f % g;
+
+  (* Test comparison operators *)
+  IF a = b THEN a := 10;
+  IF a != b THEN a := 20;
+  IF a < b THEN a := 30;
+  IF a <= b THEN a := 40;
+  IF a > b THEN a := 50;
+  IF a >= b THEN a := 60;
+
+  (* Test logical constructs *)
+  CALL WriteLn();
+  CALL WriteI(a);
+  CALL WriteC(c);
+
+  (* Test array with special symbols *)
+  arr(.5.) := 100;
+
+  (* Test strings and characters *)
+  str := 'Hello\\, \'world!';
+  c := 'A';
+
+  (* Test comments *)
+  // This is a single-line comment
+  (* This is a multi-line comment *)
+END.
