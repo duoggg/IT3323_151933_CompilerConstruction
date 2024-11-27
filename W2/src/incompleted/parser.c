@@ -200,6 +200,9 @@ void compileType(void) {
     case KW_INTEGER:
       eat(KW_INTEGER);
       break;
+    case KW_BYTES:
+      eat(KW_BYTES);
+      break;
     case KW_CHAR:
       eat(KW_CHAR);
       break;
@@ -280,6 +283,8 @@ void compileStatements2(void) {
       break;
     case KW_END:
       break;
+    case KW_UNTIL:
+      break;
     default:
       eat(SB_SEMICOLON);
       error(ERR_INVALIDSTATEMENT, lookAhead->lineNo, lookAhead->colNo);
@@ -289,6 +294,9 @@ void compileStatements2(void) {
 
 void compileStatement(void) {
   switch (lookAhead->tokenType) {
+  case KW_REPEAT:
+    compileRepeatSt();
+    break;
   case TK_IDENT:
     compileAssignSt();
     break;
@@ -310,6 +318,7 @@ void compileStatement(void) {
     // EmptySt needs to check FOLLOW tokens
   case SB_SEMICOLON:
   case KW_END:
+  case KW_UNTIL:
   case KW_ELSE:
     break;
     // Error occurs
@@ -371,6 +380,15 @@ void compileWhileSt(void) {
   eat(KW_DO);
   compileStatement();
   assert("While statement parsed ....");
+}
+
+void compileRepeatSt(void) {
+  assert("Parsing a repeat statement ....");
+  eat(KW_REPEAT);
+  compileStatements();
+  eat(KW_UNTIL);
+  compileCondition();
+  assert("Repeat statement parsed ....");
 }
 
 void compileForSt(void) {
@@ -493,7 +511,7 @@ void compileTerm(void) {
 
 void compileTerm2(void) {
   // TODO
-  if (lookAhead->tokenType == SB_TIMES || lookAhead->tokenType == SB_SLASH) {
+  if (lookAhead->tokenType == SB_POWER || lookAhead->tokenType == SB_TIMES || lookAhead->tokenType == SB_SLASH) {
     eat(lookAhead->tokenType);
     compileFactor();
     compileTerm2();

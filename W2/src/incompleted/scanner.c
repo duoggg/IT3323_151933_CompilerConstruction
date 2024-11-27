@@ -138,9 +138,16 @@ Token* getToken(void) {
     readChar(); 
     return token;
   case CHAR_TIMES:
-    token = makeToken(SB_TIMES, lineNo, colNo);
-    readChar(); 
-    return token;
+    ln = lineNo;  // Lưu lại vị trí hiện tại
+    cn = colNo;
+    readChar();
+    // Kiểm tra ký tự tiếp theo có phải cũng là '*' không
+    if ((currentChar != EOF) && (charCodes[currentChar] == CHAR_TIMES)) {
+      readChar(); // Đọc tiếp ký tự thứ hai
+      return makeToken(SB_POWER, ln, cn); // Trả về token SB_POWER nếu gặp `**`
+    } else {
+      return makeToken(SB_TIMES, ln, cn); // Trả về token SB_TIMES nếu chỉ gặp một `*`
+    }
   case CHAR_SLASH:
     token = makeToken(SB_SLASH, lineNo, colNo);
     readChar(); 
@@ -261,6 +268,7 @@ void printToken(Token *token) {
   case KW_TYPE: printf("KW_TYPE\n"); break;
   case KW_VAR: printf("KW_VAR\n"); break;
   case KW_INTEGER: printf("KW_INTEGER\n"); break;
+  case KW_BYTES: printf("KW_BYTES\n"); break;
   case KW_CHAR: printf("KW_CHAR\n"); break;
   case KW_ARRAY: printf("KW_ARRAY\n"); break;
   case KW_OF: printf("KW_OF\n"); break;
@@ -276,6 +284,8 @@ void printToken(Token *token) {
   case KW_DO: printf("KW_DO\n"); break;
   case KW_FOR: printf("KW_FOR\n"); break;
   case KW_TO: printf("KW_TO\n"); break;
+  case KW_REPEAT: printf("KW_REPEAT\n"); break;
+  case KW_UNTIL: printf("KW_UNTIL\n"); break;
 
   case SB_SEMICOLON: printf("SB_SEMICOLON\n"); break;
   case SB_COLON: printf("SB_COLON\n"); break;
@@ -290,6 +300,7 @@ void printToken(Token *token) {
   case SB_GE: printf("SB_GE\n"); break;
   case SB_PLUS: printf("SB_PLUS\n"); break;
   case SB_MINUS: printf("SB_MINUS\n"); break;
+  case SB_POWER: printf("SB_POWER\n"); break;
   case SB_TIMES: printf("SB_TIMES\n"); break;
   case SB_SLASH: printf("SB_SLASH\n"); break;
   case SB_LPAR: printf("SB_LPAR\n"); break;
@@ -298,4 +309,3 @@ void printToken(Token *token) {
   case SB_RSEL: printf("SB_RSEL\n"); break;
   }
 }
-
