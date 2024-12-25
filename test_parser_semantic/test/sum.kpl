@@ -1,0 +1,22 @@
+PROGRAM SwapTest;
+CONST 
+  d = 20;
+VAR  
+  a: INTEGER;
+  b: INTEGER;
+  c: INTEGER;
+  res: INTEGER;
+
+FUNCTION Sum(x, y: INTEGER): INTEGER;
+BEGIN
+  Sum := x + y;
+END;
+
+BEGIN
+  a := 10;  { Gán giá trị cho các biến để tính toán }
+  b := 5;
+  c := 15;
+
+  res := Sum(a + b, d + d - c) + Sum(d DIV b, d + c);
+  WRITELN(res); { Thay CALL WRITEI bằng WRITELN để in giá trị }
+END.
